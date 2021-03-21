@@ -1,18 +1,22 @@
 # Somfy Remote
-An ESP32/ESP8266 Arduino program able to emulate a Somfy remote control.
+An ESP32/ESP8266 program able to emulate a Somfy remote control.
 
-Forked from https://github.com/Nickduino/Somfy_Remote.
+Forked from
+
+* https://github.com/marmotton/Somfy_Remote
+  * https://github.com/Nickduino/Somfy_Remote
+
+(see also Credits section below)
 
 If you want to learn more about the Somfy RTS protocol, check out [Pushtack](https://pushstack.wordpress.com/somfy-rts-protocol/).
 
 
 ## How the hardware works
-Connect a *433.42 Mhz* RF transmitter to Pin 23 of the ESP32 (or change the pin in the config file). I ordered 433.42 MHz crystals to replace the one on a 433.92MHz transmitter.
-A RTL-SDR comes in handy to check the frequency and make sure the transmitter is working.
+Connect a *433.42 MHz* RF transmitter to Pin 23 of the ESP32 (or change the pin in the config file). I ordered 433.42 MHz crystals to replace the one on a 433.92MHz transmitter.
 
 
 ## How the software works
-Edit [config.h](https://github.com/marmotton/Somfy_Remote/blob/master/src/config_EXAMPLE.h) to adapt to your location. You can add or remove remotes to your liking.
+Copy [src/config_EXAMPLE.h](src/config_EXAMPLE.h) to `config.h` to adapt to your location. The relevant code lines are remarked. You can add or remove remotes to your liking.
 
 The ESP will subscribe to the configured MQTT topics. Watch what is happening on the serial port to make sure it is working.
 
@@ -28,9 +32,27 @@ Simply publish these messages on the corresponding topics to control your blinds
 
 The rolling code value is stored in the EEPROM, so that you don't loose count of your rolling code after a reset. In case you'd like to replace the ESP, write down the current rolling codes which can be read using the serial terminal (and use them as default rolling codes in config.h).
 
-## My hardware
-The [doc](https://github.com/marmotton/Somfy_Remote/blob/master/doc) folder contains some photos.
-- ESP8266 board: [AliExpress link](https://www.aliexpress.com/item/D1-mini-Mini-NodeMcu-4M-bytes-Lua-WIFI-Internet-of-Things-development-board-based-ESP8266-by/32633763949.html)
-- 433MHz RF transmitter: [AliExpress link](https://www.aliexpress.com/item/433Mhz-RF-Transmitter-and-Receiver-Module-Link-Kit-for-ARM-MCU-WL-DIY-315MHZ-433MHZ-Wireless/32298304710.html)
-- 433.42MHz quartz: [eBay link](https://www.ebay.ch/itm/5PCS-433-42M-433-42MHz-R433-F433-SAW-Resonator-Crystals-TO-39-NEW/232574365405)
-- Housing: [Youmagine link](https://www.youmagine.com/designs/housing-for-a-d1-mini-with-rf)
+## Hardware I used
+
+I basically followed [@marmotton](https://github.com/marmotton/)'s [original list](https://github.com/marmotton/Somfy_Remote/blob/789506d84c28794392c8eb38ed67748cf528c3aa/README.md#my-hardware), but this one here's adjusted for the German 🇩🇪 region:
+
+ESP8266 board
+:   [D1 Mini at BerryBase](https://www.berrybase.de/dev.-boards/esp8266-esp32-d1-mini/boards/d1-mini-esp8266-entwicklungsboard)
+
+433 MHz RF transmitter
+:   [FS1000A at BerryBase](https://www.berrybase.de/sensoren-module/funk-kommunikation/433mhz-sender-empf-228-nger-superregeneration-modul-fs1000a-xy-fst-xy-mk-5v)
+
+433.42 MHz SAW oscillator
+:   [at eBay from CN](https://www.ebay.de/itm/232574365405)
+
+PCB:
+:   _tbd_
+
+## Credit
+
+Credit is due to
+
+* https://github.com/marmotton/Somfy_Remote
+* https://github.com/Nickduino/Somfy_Remote
+
+whose this project is forked from; besides I'd like to thank [@RoyOltmans](https://github.com/RoyOltmans) with his [somfy_esp8266_remote_arduino](https://github.com/RoyOltmans/somfy_esp8266_remote_arduino) repository: this one gave me some more advice and inspiration for using a nice [Fritzing](https://fritzing.org/) PCB. You can find mine at [assets/Somfy Remote Fritzing Sketch.fzz](assets/Somfy Remote Fritzing Sketch.fzz). Reviews and ideas are highly welcome.
