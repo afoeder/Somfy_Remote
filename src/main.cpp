@@ -70,7 +70,7 @@ void mqttconnect();
 
 void setup() {
     // USB serial port
-    Serial.begin(115200);
+    Serial.begin(74880);
 
     // Output to 433.42MHz transmitter
     pinMode(PORT_TX, OUTPUT);
