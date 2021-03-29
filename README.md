@@ -32,6 +32,53 @@ Simply publish these messages on the corresponding topics to control your blinds
 
 The rolling code value is stored in the EEPROM, so that you don't loose count of your rolling code after a reset. In case you'd like to replace the ESP, write down the current rolling codes which can be read using the serial terminal (and use them as default rolling codes in config.h).
 
+
+## Use with Home Assistant
+I added my blinds in the `configuration.yaml` in the following manner:
+
+```yaml
+cover:
+  - name: "Living room blinds"
+    platform: mqtt
+    
+    availability:
+      - topic: "smartHome/somfy-remote/status"
+        payload_available: "online"
+        payload_not_available: "offline"
+
+    command_topic: "smartHome/livingRoom/blinds"
+    payload_open: "u"
+    payload_close: "d"
+    payload_stop: "s"
+    
+    state_topic: "smartHome/livingRoom/blinds/state"
+    state_opening: "opening"
+    state_closing: "closing"
+    state_stopped: "stopped"
+
+    optimistic: true
+
+  - name: "Office blinds"
+    platform: mqtt
+    
+    availability:
+      - topic: "smartHome/somfy-remote/status"
+        payload_available: "online"
+        payload_not_available: "offline"
+
+    command_topic: "smartHome/office/blinds"
+    payload_open: "u"
+    payload_close: "d"
+    payload_stop: "s"
+    
+    state_topic: "smartHome/office/blinds"
+    state_opening: "opening"
+    state_closing: "closing"
+    state_stopped: "stopped"
+
+    optimistic: true
+```
+
 ## Hardware I used
 
 I basically followed [@marmotton](https://github.com/marmotton/)'s [original list](https://github.com/marmotton/Somfy_Remote/blob/789506d84c28794392c8eb38ed67748cf528c3aa/README.md#my-hardware), but this one here's adjusted for the German 🇩🇪 region:

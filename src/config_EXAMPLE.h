@@ -36,7 +36,9 @@ const char*        mqtt_user = "username";
 const char*    mqtt_password = "secretPassword5678";
 const char*          mqtt_id = "esp32-somfy-remote";
 
+const char*    state_postfix = "/state"; // will be appended to the remote's mqtt_topic and report `opening`, `closing`, `stopped`, inspired by https://www.home-assistant.io/integrations/cover.mqtt/#configuration
+
 const char*     status_topic = "smartHome/somfy-remote/status"; // Online / offline
 const char*        ack_topic = "smartHome/somfy-remote/ack"; // Commands ack "id: 0x184623, cmd: u"
 
-#define PORT_TX 23 // Output data on pin 23 (can range from 0 to 31). Check pin numbering on ESP8266.
+#define PORT_TX 23 // Is GPIO5 on D1 mini. constant is fetched from https://github.com/esp8266/Arduino/blob/5ac64ffa27461161401971796150ef7f2b26a77d/variants/d1_mini/pins_arduino.h#L38

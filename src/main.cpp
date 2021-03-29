@@ -1,7 +1,11 @@
 #include <Arduino.h>
 #include <vector>
 
-/* Adapted to run on ESP32 from original code at https://github.com/Nickduino/Somfy_Remote
+/*
+
+Authors/Credits:
+    originally from https://github.com/Nickduino/Somfy_Remote, CC-BY-SA 4.0
+    Adapted to run on ESP32 from original code at https://github.com/Nickduino/Somfy_Remote
 
 This program allows you to emulate a Somfy RTS or Simu HZ remote.
 If you want to learn more about the Somfy RTS protocol, check out https://pushstack.wordpress.com/somfy-rts-protocol/
@@ -39,6 +43,8 @@ struct REMOTE {
     unsigned int default_rolling_code;
     uint32_t eeprom_address;
 };
+
+char const* shutterState;
 
 #include "config.h"
 
@@ -204,21 +210,26 @@ void receivedCallback(char* topic, byte* payload, unsigned int length) {
     }
 
     if ( commandIsValid ) {
+        shutterState = "";
         if ( command == 'u' ) {
             Serial.println("Monte"); // Somfy is a French company, after all.
             BuildFrame(frame, HAUT, currentRemote);
+            shutterState = "opening";
         }
         else if ( command == 's' ) {
             Serial.println("Stop");
             BuildFrame(frame, STOP, currentRemote);
+            shutterState = "stopped";
         }
         else if ( command == 'd' ) {
             Serial.println("Descend");
             BuildFrame(frame, BAS, currentRemote);
+            shutterState = "closing";
         }
         else if ( command == 'p' ) {
             Serial.println("Prog");
             BuildFrame(frame, PROG, currentRemote);
+            shutterState = "programming";
         }
 
         Serial.println("");
@@ -234,6 +245,10 @@ void receivedCallback(char* topic, byte* payload, unsigned int length) {
         ackString.concat(", cmd: ");
         ackString.concat(command);
         mqtt.publish(ack_topic, ackString.c_str());
+
+        mqtt.publish(
+            (String(currentRemote.mqtt_topic) + state_postfix).c_str(),
+            shutterState);
     }
 }
 
